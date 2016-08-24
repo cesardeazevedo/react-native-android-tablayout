@@ -7,7 +7,9 @@ import {
   ColorPropType,
   processColor,
   requireNativeComponent,
-  View
+  View,
+  UIManager,
+  findNodeHandle,
 } from 'react-native';
 
 export default class TabLayout extends Component {
@@ -24,6 +26,15 @@ export default class TabLayout extends Component {
     if (this.props.onTabSelected) {
       this.props.onTabSelected(e);
     }
+  };
+
+  setViewPager: Function = (viewPager) => {
+    const viewPagerNode = findNodeHandle(viewPager);
+    UIManager.dispatchViewManagerCommand(
+      findNodeHandle(this),
+      UIManager.TabLayout.Commands.setViewPager,
+      [viewPagerNode],
+    );
   };
 
   render() {

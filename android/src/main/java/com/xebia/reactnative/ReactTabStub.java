@@ -106,6 +106,10 @@ public class ReactTabStub extends ViewGroup {
     customViewChanged();
   }
 
+  public void removeCustomView() {
+    this.customView = null;
+  }
+
   public void setAccessibilityLabel(String accessibilityLabel) {
     setContentDescription(accessibilityLabel);
     accessibilityLabelChanged();

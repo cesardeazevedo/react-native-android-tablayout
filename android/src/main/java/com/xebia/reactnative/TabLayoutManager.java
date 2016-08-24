@@ -1,9 +1,13 @@
 package com.xebia.reactnative;
 
+import javax.annotation.Nullable;
+
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
 import android.util.Log;
 import android.view.View;
+import android.support.v4.view.ViewPager;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.JSApplicationIllegalArgumentException;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -16,6 +20,8 @@ import com.xebia.reactnative.ReactTabLayout.InitialState;
 import java.util.Map;
 
 public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
+  public static final int COMMAND_SET_VIEW_PAGER = 1;
+
   public static final String REACT_CLASS = "TabLayout";
 
   private EventDispatcher mEventDispatcher;
@@ -127,6 +133,45 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
     Tab tab = tabLayout.getTabAt(position);
     if (tab != null) {
       tab.select();
+    }
+  }
+
+  @Override
+  public Map<String,Integer> getCommandsMap() {
+    return MapBuilder.of("setViewPager", COMMAND_SET_VIEW_PAGER);
+  }
+
+  @Override
+  public void receiveCommand(ReactTabLayout view, int commandType, @Nullable ReadableArray args) {
+    switch(commandType) {
+      case 1:
+        int viewPagerId = args.getInt(0);
+        ViewPager viewPager = (ViewPager) view.getRootView().findViewById(viewPagerId);
+        if (viewPager != null) {
+          view.setupWithViewPager(viewPager);
+        } else {
+          throw new JSApplicationIllegalArgumentException("ViewPager not found");
+        }
+
+        // reattach tabs after setup with ViewPager
+        view.removeAllTabs();
+        for (int index = 0; index < view.tabStubs.size(); index++) {
+          ReactTabStub tabStub = view.tabStubs.get(index);
+          tabStub.removeCustomView();
+
+          Tab tab = view.newTab();
+          view.addTab(tab);
+          tabStub.attachCustomTabView(tab);
+
+          if (view.initialTabPosition == index) {
+            view.initialState = InitialState.TAB_SELECTED;
+            tab.select();
+          }
+        }
+
+        return;
+      default:
+         throw new JSApplicationIllegalArgumentException("Invalid Command");
     }
   }
 
