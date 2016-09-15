@@ -37,7 +37,10 @@ public class ReactTabStub extends ViewGroup {
   private String iconPackage;
   private String iconUri;
   private int iconSize;
+  private int textSize;
   private int textColor;
+  private String textFontName;
+  private boolean textSingleLine;
 
   public void attachCustomTabView(Tab tab) {
     Log.d(TAG, "attachCustomTabView");
@@ -58,6 +61,12 @@ public class ReactTabStub extends ViewGroup {
       if (textColor != 0) {
         textColorChanged();
       }
+      if (textFontName != null) {
+        textFontNameChanged();
+      }
+      if (textSize != 0) {
+        textSizeChanged();
+      }
       if (iconUri != null) {
         iconUriChanged();
       } else if (iconResId != null) {
@@ -66,6 +75,8 @@ public class ReactTabStub extends ViewGroup {
       if (iconSize > 0) {
         iconSizeChanged();
       }
+
+      textSingleLineChanged();
     } else {
       customViewChanged();
     }
@@ -99,6 +110,21 @@ public class ReactTabStub extends ViewGroup {
   public void setTextColor(int textColor) {
     this.textColor = textColor;
     textColorChanged();
+  }
+
+  public void setTextFontName(String textFontName) {
+    this.textFontName = textFontName;
+    textFontNameChanged();
+  }
+
+  public void setTextSize(int textSize) {
+    this.textSize = textSize;
+    textSizeChanged();
+  }
+
+  public void setTextSingleLine(boolean textSingleLine) {
+    this.textSingleLine = textSingleLine;
+    textSingleLineChanged();
   }
 
   public void setCustomView(View customView) {
@@ -179,6 +205,36 @@ public class ReactTabStub extends ViewGroup {
     Log.d(TAG, "textColorChanged: " + textColor);
 
     tabText.setTextColor(textColor);
+  }
+
+  private void textFontNameChanged() {
+    if (tabText == null) return;
+    Log.d(TAG, "textFontNameChanged: " + textFontName);
+
+    try {
+      Typeface face = ReactFontManager.getInstance().getTypeface(textFontName, Typeface.NORMAL, getContext().getAssets());
+      tabText.setTypeface(face);
+    } catch (Exception e) {
+      Log.d(TAG, "textFontNameChangedError: " + e.getMessage());
+    }
+  }
+
+  private void textSizeChanged() {
+    if (tabText == null) return;
+    Log.d(TAG, "textSizeChanged: " + textSize);
+
+    tabText.setTextSize(textSize);
+  }
+
+  private void textSingleLineChanged() {
+    if (tabText == null) return;
+    Log.d(TAG, "textSingleLine: " + textSingleLine);
+
+    tabText.setSingleLine(textSingleLine);
+
+    if (textSingleLine == false) {
+      tabText.setGravity(Gravity.CENTER);
+    }
   }
 
   public void accessibilityLabelChanged() {

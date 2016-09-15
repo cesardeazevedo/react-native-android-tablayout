@@ -19,7 +19,10 @@ export default class Tab extends Component {
     iconUri: PropTypes.string,
     name: PropTypes.string,
     onTabSelected: PropTypes.func,
-    textColor: ColorPropType
+    textColor: ColorPropType,
+    textFontName: PropTypes.string,
+    textSize: PropTypes.number,
+    textSingleLine: PropTypes.bool,
   };
 
   onTabSelected: Function = (e) => {
