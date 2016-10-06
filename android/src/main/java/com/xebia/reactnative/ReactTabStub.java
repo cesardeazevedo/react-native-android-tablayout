@@ -4,14 +4,18 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.design.widget.TabLayout.Tab;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.facebook.react.views.text.ReactFontManager;
 
 public class ReactTabStub extends ViewGroup {
   public static final String TAG = "ReactTabStub";
