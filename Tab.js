@@ -7,12 +7,13 @@ import {
   ColorPropType,
   processColor,
   requireNativeComponent,
-  View
+  View,
+  ViewPropTypes,
 } from 'react-native';
 
 export default class Tab extends Component {
   static propTypes = {
-    ...View.propTypes,
+    ...ViewPropTypes,
     iconPackage: PropTypes.string,
     iconResId: PropTypes.string,
     iconSize: PropTypes.number,

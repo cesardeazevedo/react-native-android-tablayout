@@ -22,6 +22,8 @@ import java.util.Map;
 public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
   public static final int COMMAND_SET_VIEW_PAGER = 1;
 
+  public static final int COMMAND_SET_SELECTED_TAB = 2;
+
   public static final String REACT_CLASS = "TabLayout";
 
   private EventDispatcher mEventDispatcher;
@@ -138,13 +140,14 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
 
   @Override
   public Map<String,Integer> getCommandsMap() {
-    return MapBuilder.of("setViewPager", COMMAND_SET_VIEW_PAGER);
+    return MapBuilder.of("setViewPager", COMMAND_SET_VIEW_PAGER,
+                         "setSelectedTab", COMMAND_SET_SELECTED_TAB);
   }
 
   @Override
   public void receiveCommand(ReactTabLayout view, int commandType, @Nullable ReadableArray args) {
     switch(commandType) {
-      case 1:
+      case COMMAND_SET_VIEW_PAGER:
         int viewPagerId = args.getInt(0);
         ViewPager viewPager = (ViewPager) view.getRootView().findViewById(viewPagerId);
         if (viewPager != null) {
@@ -169,6 +172,10 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
           }
         }
 
+        return;
+      case COMMAND_SET_SELECTED_TAB:
+        int selectedIndex = args.getInt(0);
+        this.selectTab(view, selectedIndex);
         return;
       default:
          throw new JSApplicationIllegalArgumentException("Invalid Command");

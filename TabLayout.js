@@ -10,11 +10,12 @@ import {
   View,
   UIManager,
   findNodeHandle,
+  ViewPropTypes,
 } from 'react-native';
 
 export default class TabLayout extends Component {
   static propTypes = {
-    ...View.propTypes,
+    ...ViewPropTypes,
     onTabSelected: PropTypes.func,
     selectedTab: PropTypes.number,
     selectedTabIndicatorColor: ColorPropType,
@@ -34,6 +35,14 @@ export default class TabLayout extends Component {
       findNodeHandle(this),
       UIManager.TabLayout.Commands.setViewPager,
       [viewPagerNode],
+    );
+  };
+
+  setSelectedTab: Function = (selectedIndex) => {
+    UIManager.dispatchViewManagerCommand(
+      findNodeHandle(this),
+      UIManager.TabLayout.Commands.setSelectedTab,
+      [selectedIndex],
     );
   };
 
