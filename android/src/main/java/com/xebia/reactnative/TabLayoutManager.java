@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import android.support.design.widget.TabLayout.OnTabSelectedListener;
 import android.support.design.widget.TabLayout.Tab;
-import android.util.Log;
 import android.view.View;
 import android.support.v4.view.ViewPager;
 import com.facebook.react.bridge.ReadableArray;
@@ -35,7 +34,6 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
 
   @Override
   protected ReactTabLayout createViewInstance(ThemedReactContext themedReactContext) {
-    Log.d(REACT_CLASS, "createViewInstance");
     ReactTabLayout tabLayout = new ReactTabLayout(themedReactContext);
     tabLayout.setOnTabSelectedListener(new TabLayoutOnTabSelectedListener(tabLayout));
     return tabLayout;
@@ -43,7 +41,6 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
 
   @Override
   public void addView(ReactTabLayout tabLayout, View child, int index) {
-    Log.d(REACT_CLASS, "addView");
     if (!(child instanceof ReactTabStub)) {
       throw new JSApplicationIllegalArgumentException("The TabLayout can only have Tab children");
     }
@@ -71,35 +68,29 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
 
   @ReactProp(name = "selectedTab", defaultInt = 0)
   public void setSelectedTab(ReactTabLayout view, int selectedTab) {
-    Log.d(REACT_CLASS, "selectedTab " + selectedTab);
     selectTab(view, selectedTab);
   }
 
   @ReactProp(name = "selectedTabIndicatorColor")
   public void setSelectedTabIndicatorColor(ReactTabLayout view, int indicatorColor) {
-    Log.d(REACT_CLASS, "selectedTabIndicatorColor " + indicatorColor);
     view.setSelectedTabIndicatorColor(indicatorColor);
   }
 
   @ReactProp(name = "tabMode")
   public void setTabMode(ReactTabLayout view, String mode) {
-    Log.d(REACT_CLASS, "tabMode " + mode);
     try {
       TabMode tabMode = TabMode.fromString(mode);
       view.setTabMode(tabMode.mode);
     } catch (IllegalArgumentException e) {
-      Log.w(REACT_CLASS, "No valid tabMode: " + mode);
     }
   }
 
   @ReactProp(name = "tabGravity")
   public void setTabGravity(ReactTabLayout view, String gravity) {
-    Log.d(REACT_CLASS, "tabGravity " + gravity);
     try {
       TabGravity tabGravity = TabGravity.fromString(gravity);
       view.setTabGravity(tabGravity.gravity);
     } catch (IllegalArgumentException e) {
-      Log.w(REACT_CLASS, "No valid tabGravity: " + gravity);
     }
   }
 
@@ -127,8 +118,6 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
         // store initial position until tab is added
         tabLayout.initialTabPosition = position;
         tabLayout.initialState = InitialState.TAB_POSITION_SET;
-      } else {
-        Log.w(REACT_CLASS, "Tried to select out of bounds tab");
       }
       return;
     }
@@ -199,7 +188,6 @@ public class TabLayoutManager extends ViewGroupManager<ReactTabLayout> {
       if (tabStub == null) {
         return;
       }
-      Log.d(REACT_CLASS, "dispatchEvent");
       int position = mTabLayout.tabStubs.indexOf(tabStub);
       mEventDispatcher.dispatchEvent(new TabSelectedEvent(tabStub.getId(), position));
       mEventDispatcher.dispatchEvent(new TabSelectedEvent(mTabLayout.getId(), position));

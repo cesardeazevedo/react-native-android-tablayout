@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.design.widget.TabLayout.Tab;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -46,8 +45,6 @@ public class ReactTabStub extends ViewGroup {
   private boolean textSingleLine;
 
   public void attachCustomTabView(Tab tab) {
-    Log.d(TAG, "attachCustomTabView");
-
     this.tab = tab;
 
     if (customView == null) {
@@ -146,7 +143,6 @@ public class ReactTabStub extends ViewGroup {
 
   private void nameChanged() {
     if (tabText == null) return;
-    Log.d(TAG, "nameChanged: " + name);
 
     tabText.setText(name);
 
@@ -156,7 +152,6 @@ public class ReactTabStub extends ViewGroup {
   private void iconResourceChanged() {
     if (tabImage == null) return;
     String packageName = iconPackage != null ? iconPackage : getContext().getPackageName();
-    Log.d(TAG, "iconResourceChanged, id: " + iconResId + " package: " + packageName);
 
     if (!TextUtils.isEmpty(iconResId)) {
       try {
@@ -164,7 +159,6 @@ public class ReactTabStub extends ViewGroup {
         tabImage.setImageResource(resId);
         tabImage.setVisibility(View.VISIBLE);
       } catch (Exception e) {
-        Log.e(TAG, "Icon resource id " + iconResId + " with package " + packageName + " not found", e);
       }
     } else {
       tabImage.setVisibility(View.GONE);
@@ -175,7 +169,6 @@ public class ReactTabStub extends ViewGroup {
 
   private void iconUriChanged() {
     if (tabImage == null) return;
-    Log.d(TAG, "iconUriChanged: " + iconUri);
 
     if (iconUri.startsWith("file://")) {
       String pathName = iconUri.substring(7);
@@ -184,8 +177,6 @@ public class ReactTabStub extends ViewGroup {
       tabImage.setVisibility(View.VISIBLE);
     } else if (TextUtils.isEmpty(iconUri)) {
       tabImage.setVisibility(View.GONE);
-    } else {
-      Log.e(TAG, "Icon uri only supports file:// for now, saw " + iconUri);
     }
 
     updateLayout();
@@ -193,7 +184,6 @@ public class ReactTabStub extends ViewGroup {
 
   private void iconSizeChanged() {
     if (tabImage == null) return;
-    Log.d(TAG, "iconSizeChanged: " + iconSize);
 
     float scale = getContext().getResources().getDisplayMetrics().density;
     int size = Math.round(iconSize * scale);
@@ -205,33 +195,28 @@ public class ReactTabStub extends ViewGroup {
 
   private void textColorChanged() {
     if (tabText == null) return;
-    Log.d(TAG, "textColorChanged: " + textColor);
 
     tabText.setTextColor(textColor);
   }
 
   private void textFontNameChanged() {
     if (tabText == null) return;
-    Log.d(TAG, "textFontNameChanged: " + textFontName);
 
     try {
       Typeface face = ReactFontManager.getInstance().getTypeface(textFontName, Typeface.NORMAL, getContext().getAssets());
       tabText.setTypeface(face);
     } catch (Exception e) {
-      Log.d(TAG, "textFontNameChangedError: " + e.getMessage());
     }
   }
 
   private void textSizeChanged() {
     if (tabText == null) return;
-    Log.d(TAG, "textSizeChanged: " + textSize);
 
     tabText.setTextSize(textSize);
   }
 
   private void textSingleLineChanged() {
     if (tabText == null) return;
-    Log.d(TAG, "textSingleLine: " + textSingleLine);
 
     tabText.setSingleLine(textSingleLine);
 
@@ -243,7 +228,6 @@ public class ReactTabStub extends ViewGroup {
   public void accessibilityLabelChanged() {
     if (customView == null || customView.getParent() == null) return;
     CharSequence contentDescription = getContentDescription();
-    Log.d(TAG, "accessibilityLabelChanged: " + contentDescription);
 
     ViewGroup parent = (ViewGroup) customView.getParent();
     parent.setContentDescription(contentDescription);
@@ -251,7 +235,6 @@ public class ReactTabStub extends ViewGroup {
 
   public void customViewChanged() {
     if (tab == null) return;
-    Log.d(TAG, "customViewChanged");
 
     FrameLayout wrapperView = new FrameLayout(getContext()) {
       @Override
