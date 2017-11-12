@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "flow": "node_modules/.bin/flow check",
-    "lint": "node_modules/.bin/eslint .",
-    "prepush": "npm run lint"
+    "lint": "node_modules/.bin/eslint ."
   },
   "repository": {
     "type": "git",
@@ -27,14 +26,14 @@
     "url": "https://github.com/AlbertBrand/react-native-android-tablayout/issues"
   },
   "homepage": "https://github.com/AlbertBrand/react-native-android-tablayout#readme",
+  "dependencies": {
+    "prop-types": "^15.6.0"
+  },
   "devDependencies": {
     "babel-eslint": "6.1.0",
     "eslint": "2.13.1",
     "eslint-plugin-react": "5.2.2",
     "flow-bin": "0.26.0",
     "husky": "0.11.4"
-  },
-  "peerDependencies": {
-    "react-native": "0.33"
   }
 }
